@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/promptflow/latest/OpenAIConnection.schema.json
+name: openrouter
+type: open_ai
+api_key: "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"
+base_url: "https://openrouter.ai/api/v1"
