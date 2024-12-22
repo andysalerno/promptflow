@@ -61,10 +61,11 @@ nodes:
     type: code
     path: generate_question.py
   inputs:
-    connection: ""
+    connection: nzxt_vllm
     context: ${validate_text_chunk.output.context}
     temperature: 0.2
     generate_question_prompt: ${generate_question_prompt.output}
+    model: model
   use_variants: false
 - name: validate_question
   type: python
@@ -72,10 +73,11 @@ nodes:
     type: code
     path: validate_question.py
   inputs:
-    connection: ""
+    connection: nzxt_vllm
     temperature: 0.2
     generated_question: ${generate_question.output}
     validate_question_prompt: ${validate_question_prompt.output}
+    model: model
   use_variants: false
 - name: generate_suggested_answer
   type: python
@@ -83,11 +85,12 @@ nodes:
     type: code
     path: generate_suggested_answer.py
   inputs:
-    connection: ""
+    connection: nzxt_vllm
     context: ${inputs.text_chunk}
     generate_suggested_answer_prompt: ${generate_suggested_answer_prompt.output}
     question: ${validate_question.output.question}
     temperature: 0.2
+    model: model
   use_variants: false
 - name: generate_debug_info
   type: python
@@ -112,18 +115,20 @@ nodes:
     type: code
     path: validate_suggested_answer.py
   inputs:
-    connection: ""
+    connection: nzxt_vllm
     suggested_answer: ${generate_suggested_answer.output}
     validate_suggested_answer_prompt: ${validate_suggested_answer_prompt.output}
     temperature: 0.2
+    model: model
 - name: validate_text_chunk
   type: python
   source:
     type: code
     path: validate_text_chunk.py
   inputs:
-    connection: ""
+    connection: nzxt_vllm
     score_text_chunk_prompt: ${score_text_chunk_prompt.output}
     context: ${inputs.text_chunk}
     score_threshold: 4
     temperature: 0.2
+    model: model
