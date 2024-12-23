@@ -1,21 +1,70 @@
 {
-    "package": {},
-    "code": {
-        "chat.jinja2": {
-            "type": "llm",
-            "inputs": {
-                "question": {
-                    "type": [
-                        "string"
-                    ]
-                },
-                "chat_history": {
-                    "type": [
-                        "string"
-                    ]
-                }
-            },
-            "description": "Chat with Chatbot"
+  "package": {},
+  "code": {
+    "chat.jinja2": {
+      "type": "llm",
+      "inputs": {
+        "chat_history": {
+          "type": [
+            "string"
+          ]
+        },
+        "question": {
+          "type": [
+            "string"
+          ]
         }
+      },
+      "source": "chat.jinja2"
+    },
+    "chat_variant_1.jinja2": {
+      "type": "llm",
+      "inputs": {
+        "chat_history": {
+          "type": [
+            "string"
+          ]
+        },
+        "question": {
+          "type": [
+            "string"
+          ]
+        }
+      },
+      "source": "chat_variant_1.jinja2"
+    },
+    "myllmnode.jinja2": {
+      "type": "llm",
+      "inputs": {
+        "text": {
+          "type": [
+            "string"
+          ]
+        }
+      },
+      "source": "myllmnode.jinja2"
+    },
+    "mypython.py": {
+      "type": "python",
+      "inputs": {
+        "prompty_path": {
+          "type": [
+            "string"
+          ]
+        },
+        "user_input": {
+          "type": [
+            "string"
+          ]
+        },
+        "chat_history": {
+          "type": [
+            "list"
+          ]
+        }
+      },
+      "source": "mypython.py",
+      "function": "my_python_tool"
     }
+  }
 }
