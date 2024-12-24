@@ -52,14 +52,14 @@
             "string"
           ]
         },
-        "user_input": {
+        "card_text": {
           "type": [
             "string"
           ]
         },
-        "chat_history": {
+        "card_uuid": {
           "type": [
-            "list"
+            "string"
           ]
         }
       },

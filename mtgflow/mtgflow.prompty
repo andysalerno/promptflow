@@ -10,14 +10,12 @@ model:
     base_url: http://100.78.121.6:8000/v1/
   parameters:
     max_tokens: 128
-    temperature: 0.2
+    temperature: 0.0
     response_format:
       type: json_object
 inputs:
-  user_input:
+  card_text:
     type: string
-  chat_history:
-    type: list
 ---
 system:
 The user will present you with card text from a Magic: The Gathering card.
@@ -28,18 +26,40 @@ You should decide:
 - Does the card cause your or the opponent to lose life?
 - Does the card cause your or the opponent to gain life?
 - Does the card cause your or the opponent to draw a card?
+- Does the card cause your or the opponent to create a token of any kind?
+- Does the card cause your or the opponent to add a counter of any kind?
+- Does the card cause your or the opponent to untap any permanent?
 
 ## Response format
 Your output should be json with the following format:
-{ "youDraw": true, "youGainLife": false, "youLoseLife": false, "opponentDraw": false, "opponentGainLife": false, "opponentLoseLife": true }
+
+```
+interface Card {
+    simplified_text: string;
+    effects: CardEffect[];
+}
+
+interface CardEffect {
+    event: 'draw' | 'gainLife' | 'loseLife' | 'createToken' | 'addCounter' | 'untapPermanent';
+    who: 'you' | 'opponent';
+    immediate: boolean; // true iff the effect happens immediately; false if it depends on some condition or trigger
+}
+```
+
+Here's an example of an output you might give:
+{ "simplified_text": "Each player draws a card.", "effects": [ { "event": "draw", "who": "you", "immediate": true }, { "event": "draw", "who": "opponent", "immediate": true } ] }
 
 user:
 { "cardText": "Each player draws a card." }
 assistant:
-{ "youDraw": true, "youGainLife": false, "youLoseLife": false, "opponentDraw": true, "opponentGainLife": false, "opponentLoseLife": false }
+{ "simplified_text": "Each player draws a card.", "effects": [ { "event": "draw", "who": "you", "immediate": true }, { "event": "draw", "who": "opponent", "immediate": true } ] }
 user:
 { "cardText": "At the beginning of your end step, choose one —\n-You gain 1 life.\n- Return target creature card with mana value 1 from your graveyard to the battlefield." }
 assistant:
-{ "youDraw": false, "youGainLife": true, "youLoseLife": false, "opponentDraw": false, "opponentGainLife": false, "opponentLoseLife": false }
+{ "simplified_text": "Either gain 1 life, or return a creature from your graveyard with mana value 1", "effects": [ { "event": "gainLife", "who": "you", "immediate": false } ] }
 user:
-{{user_input}}
+{ "cardText": "Whenever a creature you control enters the battlefield, you gain 1 life and target opponent loses 1 life." }
+assistant:
+{ "simplified_text": "When you play a creature, you gain 1 life and an opponent loses 1 life.", "effects": [ { "event": "gainLife", "who": "you", "immediate": false }, { "event": "loseLife", "who": "opponent", "immediate": false } ] }
+user:
+{ "cardText": "{{card_text}}" }

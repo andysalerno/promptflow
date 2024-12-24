@@ -1,12 +1,11 @@
-
 from promptflow import tool
 from promptflow.core import Prompty
 
 
 @tool
-def my_python_tool(prompty_path: str, user_input: str, chat_history: list) -> str:
+def my_python_tool(prompty_path: str, card_text: str, card_uuid: str) -> str:
     prompty = load_prompty(prompty_path)
-    output = prompty(chat_history=chat_history, user_input=user_input)
+    output = prompty(card_text=card_text)
 
     return output
 

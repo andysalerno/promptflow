@@ -2,19 +2,22 @@ $schema: https://azuremlschemas.azureedge.net/promptflow/latest/Flow.schema.json
 environment:
   python_requirements_txt: requirements.txt
 inputs:
-  chat_history:
-    type: list
-    is_chat_history: true
-    default: []
-  question:
+  card_text:
     type: string
-    is_chat_input: true
-    default: '{ "cardText": "If you lost life this turn, draw a card." }'
+    default: If you lost life this turn, draw a card.
+  card_uuid:
+    type: string
+    default: ""
 outputs:
   output:
     type: string
     reference: ${mypython.output}
-    is_chat_output: true
+  card_uuid:
+    type: string
+    reference: ${inputs.card_uuid}
+  card_text:
+    type: string
+    reference: ${inputs.card_text}
 nodes:
 - name: mypython
   type: python
@@ -23,5 +26,5 @@ nodes:
     path: mypython.py
   inputs:
     prompty_path: mtgflow.prompty
-    chat_history: ${inputs.chat_history}
-    user_input: ${inputs.question}
+    card_text: ${inputs.card_text}
+    card_uuid: ${inputs.card_uuid}

@@ -1,0 +1,7 @@
+name: mtgflow_run_100_2
+display_name: mtgflow_${variant_id}_${timestamp} # supported macros: ${variant_id},${timestamp},${run}
+flow: /workspaces/promptflow/mtgflow
+data: /workspaces/promptflow/mtgflow/card_texts_100.jsonl
+column_mapping:
+  card_text: ${data.cardText}
+  card_uuid: ${data.uuid}
