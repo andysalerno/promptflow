@@ -18,6 +18,9 @@ outputs:
   card_text:
     type: string
     reference: ${inputs.card_text}
+  card_name:
+    type: string
+    reference: ${inputs.card_name}
 nodes:
 - name: mypython
   type: python

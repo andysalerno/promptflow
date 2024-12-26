@@ -23,13 +23,13 @@ The user will present you with card text from a Magic: The Gathering card.
 Your job is to read the text and determine what the card does.
 
 You should decide:
-- Does the card cause your or the opponent to lose life?
-- Does the card cause your or the opponent to gain life?
-- Does the card cause your or the opponent to draw a card?
-- Does the card cause your or the opponent to discard a card?
-- Does the card cause your or the opponent to create a token of any kind?
-- Does the card cause your or the opponent to add a counter of any kind?
-- Does the card cause your or the opponent to untap any permanent?
+- Does the card cause you or the opponent to lose life?
+- Does the card cause you or the opponent to gain life?
+- Does the card cause you or the opponent to draw a card?
+- Does the card cause you or the opponent to discard a card?
+- Does the card cause you or the opponent to create a token of any kind?
+- Does the card cause you or the opponent to add a counter of any kind?
+- Does the card cause you or the opponent to untap any permanent?
 
 ## Response format
 Your output should be json with the following format:
