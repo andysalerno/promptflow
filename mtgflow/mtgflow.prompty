@@ -9,7 +9,7 @@ model:
     api_key: fake
     base_url: http://100.78.121.6:8000/v1/
   parameters:
-    max_tokens: 128
+    max_tokens: 256
     temperature: 0.0
     response_format:
       type: json_object
@@ -26,6 +26,7 @@ You should decide:
 - Does the card cause your or the opponent to lose life?
 - Does the card cause your or the opponent to gain life?
 - Does the card cause your or the opponent to draw a card?
+- Does the card cause your or the opponent to discard a card?
 - Does the card cause your or the opponent to create a token of any kind?
 - Does the card cause your or the opponent to add a counter of any kind?
 - Does the card cause your or the opponent to untap any permanent?
@@ -40,11 +41,17 @@ interface Card {
 }
 
 interface CardEffect {
-    event: 'draw' | 'gainLife' | 'loseLife' | 'createToken' | 'addCounter' | 'untapPermanent';
+    event: 'draw' | 'discard' | 'gainLife' | 'loseLife' | 'createToken' | 'addCounter' | 'untapPermanent';
     who: 'you' | 'opponent';
     immediate: boolean; // true iff the effect happens immediately; false if it depends on some condition or trigger
 }
 ```
+
+## Notes
+
+- a 'permanent' is a card that stays on the battlefield, like a creature, land, or artifact. Sorcery and instant cards are not permanents.
+
+## Example
 
 Here's an example of an output you might give:
 { "simplified_text": "Each player draws a card.", "effects": [ { "event": "draw", "who": "you", "immediate": true }, { "event": "draw", "who": "opponent", "immediate": true } ] }
@@ -54,6 +61,10 @@ user:
 assistant:
 { "simplified_text": "Each player draws a card.", "effects": [ { "event": "draw", "who": "you", "immediate": true }, { "event": "draw", "who": "opponent", "immediate": true } ] }
 user:
+{ "cardText": "Pay {3}{U}{U}: Draw two cards." }
+assistant:
+{ "simplified_text": "Draw two cards.", "effects": [ { "event": "draw", "who": "you", "immediate": false } ] }
+user:
 { "cardText": "At the beginning of your end step, choose one —\n-You gain 1 life.\n- Return target creature card with mana value 1 from your graveyard to the battlefield." }
 assistant:
 { "simplified_text": "Either gain 1 life, or return a creature from your graveyard with mana value 1", "effects": [ { "event": "gainLife", "who": "you", "immediate": false } ] }
@@ -61,5 +72,9 @@ user:
 { "cardText": "Whenever a creature you control enters the battlefield, you gain 1 life and target opponent loses 1 life." }
 assistant:
 { "simplified_text": "When you play a creature, you gain 1 life and an opponent loses 1 life.", "effects": [ { "event": "gainLife", "who": "you", "immediate": false }, { "event": "loseLife", "who": "opponent", "immediate": false } ] }
+user:
+{ "cardText": "When Corpse Appraiser enters, exile up to one target creature card from a graveyard. If a card is put into exile this way, look at the top three cards of your library, then put one of those cards into your hand and the rest into your graveyard." }
+assistant:
+{ "simplified_text": "When Corpse Appraiser enters, exile up to one target creature card from a graveyard. If a card is exiled, look at the top three cards of your library, put one into your hand, and the rest into your graveyard.", "effects": [] }
 user:
 { "cardText": "{{card_text}}" }
