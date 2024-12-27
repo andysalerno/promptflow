@@ -27,6 +27,7 @@ You should decide:
 - Does the card cause you or the opponent to gain life?
 - Does the card cause you or the opponent to draw a card?
 - Does the card cause you or the opponent to discard a card?
+- Does the card cause you or the opponent to mill a card?
 - Does the card cause you or the opponent to create a token of any kind?
 - Does the card cause you or the opponent to add a counter of any kind?
 - Does the card cause you or the opponent to untap any permanent?
@@ -41,7 +42,7 @@ interface Card {
 }
 
 interface CardEffect {
-    event: 'draw' | 'discard' | 'gainLife' | 'loseLife' | 'createToken' | 'addCounter' | 'untapPermanent';
+    event: 'draw' | 'discard' | 'mill' | 'gainLife' | 'loseLife' | 'createToken' | 'addCounter' | 'untapPermanent';
     who: 'you' | 'opponent';
     immediate: boolean; // true iff the effect happens immediately; false if it depends on some condition or trigger
 }
@@ -50,6 +51,8 @@ interface CardEffect {
 ## Notes
 
 - a 'permanent' is a card that stays on the battlefield, like a creature, land, or artifact. Sorcery and instant cards are not permanents.
+- `mill` is like `discard`, but for the library instead of the hand.
+- `ward` costs are payed by the opponent; i.e., a creature with the text "Ward - pay 3 life" means the opponent must pay 3 life in order to target that creature.
 
 ## Example
 

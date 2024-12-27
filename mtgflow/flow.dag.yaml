@@ -8,6 +8,9 @@ inputs:
   card_uuid:
     type: string
     default: ""
+  card_name:
+    type: string
+    default: ""
 outputs:
   output:
     type: string
